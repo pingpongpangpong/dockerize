@@ -6,7 +6,7 @@ networks:
 services:
   postgresql:
     container_name: postgresql
-    build: ./requirements/postgresql
+    build: ./postgresql
     image: postgresql:pingpong
     networks:
       - pingpong
@@ -16,7 +16,7 @@ services:
 
   django:
     container_name: django
-    build: ./requirements/django
+    build: ./django
     image: django:pingpong
     networks:
       - pingpong
@@ -28,7 +28,7 @@ services:
 
   nginx:
     container_name: nginx
-    build: ./requirements/nginx
+    build: ./nginx
     image: nginx:pingpong
     networks:
       - pingpong

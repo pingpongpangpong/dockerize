@@ -1,6 +1,5 @@
-YAML_PATH=./srcs
-YAML_FILE=$(YAML_PATH)/docker-compose.yml
-ENV_FILE=$(YAML_PATH)/.env
+YAML_FILE=docker-compose.yml
+ENV_FILE=.env
 
 .PHONY: all re clean fclean stop start
 
