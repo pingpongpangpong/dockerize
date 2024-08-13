@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>핑퐁팡퐁</title>
+	<link href="image/favicon.png" rel="icon">
+	<link href="style.css" rel="stylesheet">
+</head>
+<body id="app">
+	<div id="window">
+		<div id="title">
+			<h3 id="title-text">핑퐁팡퐁</h3>
+			<button id="sign-in">로그인</button>
+			<button id="sign-out" style="display: none;">로그아웃</button>
+		</div>
+		<div id="menu">
+			<ul>
+				<li>
+					<button id="local">
+						로컬 플레이(L)
+					</button>
+				</li>
+				<li>
+					<button id="tournament">
+						토너먼트(T)
+					</button>
+				</li>
+				<li>
+					<button id="multi" style="display: none;">
+						멀티 플레이(M)
+					</button>
+				</li>
+			</ul>
+		</div>
+		<div id="content" class="local-play"></div>
+		<div id="footer">
+			<div id="start" class="foot-el">Space: 서브</div>
+			<div id="end" class="foot-el">ESC: 게임 종료</div>
+			<div id="point" class="foot-el">
+				<form>
+					<span>게임 포인트: </span>
+					<input type="number" value="10" min="1">
+				</form>
+			</div>
+			<select id="lang" name="languages">
+				<option value="ko">한국어</option>
+				<option value="en">Endglish</option>
+				<option value="jp">日本語</option>
+			</select>
+		</div>
+	</div>
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
+				"three/addons/": "https://cdn.jsdelivr.net/npm/three/examples/jsm/"
+			}
+		}
+	</script>
+	<script type="module" src="script/sign.js"></script>
+	<script type="module" src="script/lang.js"></script>
+	<script type="module" src="script/content.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+FROM ubuntu:20.04
+ARG  DEBIAN_FRONTEND=noninteractive
+ENV  TZ=Asia/Seoul
+
+RUN  apt-get update
+RUN  apt-get install -y postgresql postgresql-contrib sudo
+
+COPY ./entrypoint.sh /root/
+
+CMD ["/bin/bash", "/root/entrypoint.sh"]
