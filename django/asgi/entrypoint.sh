@@ -2,7 +2,19 @@
 
 cd /root/src
 
-echo "DATABASES = {
+echo "
+INSTALLED_APPS = [
+    'daphne',
+    'game',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+DATABASES = {
     'default': {
         'ENGINE': '$DB_ENGINE',
         'NAME': '$DB_NAME',
@@ -13,12 +25,12 @@ echo "DATABASES = {
     }
 }" >> /root/src/pingpong/settings.py
 
-nc -vz $DB_HOST $DB_PORT > /dev/null 2>&1
+nc -vz $WSGI_HOST $WSGI_PORT > /dev/null 2>&1
 while [ $? -eq 1 ]
 do
 	sleep 1
-	echo "load...."
-	nc -vz $DB_HOST $DB_PORT > /dev/null 2>&1
+	echo "loading...."
+	nc -vz $WSGI_HOST $WSGI_PORT > /dev/null 2>&1
 done
 
 python3 manage.py makemigrations

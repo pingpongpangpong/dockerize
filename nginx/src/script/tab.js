@@ -13,6 +13,10 @@ document.getElementById('l-tab').addEventListener('click', () => {
 	removeValue();
 	exit();
 	closeBracket();
+	if (user.websocket) {
+		user.websocket.close();
+		user.websocket = undefined;
+	}
 });
 
 document.getElementById('t-tab').addEventListener('click', () => {
@@ -22,6 +26,10 @@ document.getElementById('t-tab').addEventListener('click', () => {
 	removeValue();
 	exit();
 	closeBracket();
+	if (user.websocket) {
+		user.websocket.close();
+		user.websocket = undefined;
+	}
 });
 
 document.getElementById('m-tab').addEventListener('click', () => {
@@ -31,104 +39,14 @@ document.getElementById('m-tab').addEventListener('click', () => {
 	removeValue();
 	exit();
 	closeBracket();
-	const game = new Game(10);
-	game.role = 'NONE';
-	game.status = 'NONE';
-
+	fillRoomList(1);
 	if (user.websocket) {
-		user.websocket.onmessage = (e) => {
-			const data = JSON.parse(e.data);
-			switch (data.msgType) {
-				case "ROOM_LIST_RESPONSE":
-					console.log('ROOM_LIST_RESPONSE');
-					fillRoomList(data);
-					break;
-				case "CREATE_ROOM_ALLOW":
-					console.log('CREATE_ROOM_ALLOW');
-					if (game.role === 'NONE' && game.status === 'NONE') {
-						game.gamePoint = data.gamePoint;
-						game.role = 'HOST';
-						game.status = 'READY';
-					}
-					break;
-				case "JOIN_ROOM_ALLOW":
-					console.log('JOIN_ROOM_ALLOW');
-					if (game.role === 'NONE' && game.status === 'NONE') {
-						game.gamePoint = data.gamePoint;
-						game.role = 'CLIENT';
-						game.status = 'READY';
-					}
-					break;
-				case "GAME_START":
-					console.log('GAME_START');
-					if (game.role === 'HOST' && game.status === 'READY') {
-						game.awakeHost(data.player1, data.player2);
-						game.status = 'RUNNING';
-						game.updateHost(user.websocket);
-					} else if (game.role === 'CLIENT' && game.status === 'READY') {
-						game.awakeClient(data.player1, data.player2);
-						game.status = 'RUNNING';
-						game.updateClient(user.websocket);
-					}
-					break;
-				case "SYNC":
-					if (game.role === 'CLIENT' && game.status === 'RUNNING') {
-						game.player1.mesh.position.x = data.player1.x;
-						game.player1.mesh.position.y = data.player1.y;
-						game.player1.score = data.player1.score;
-						game.player2.mesh.position.x = data.player2.x;
-						game.player2.mesh.position.y = data.player2.y;
-						game.player2.score = data.player2.score;
-						game.ball.mesh.position.x = data.ball.x;
-						game.ball.mesh.position.y = data.ball.y;
-						game.scoreChanged = (data.scoreChanged === 'true');
-					}
-					break;
-				case "INPUT":
-					if (game.role === 'HOST' && game.status === 'RUNNING') {
-						game.player2.keyInput.up = (data.keyInputUp === 'true');
-						game.player2.keyInput.down = (data.keyInputDown === 'true');
-					}
-					break;
-				case "DISCONNECT":
-					console.log('DISCONNECT');
-					if (game.status === 'READY' || game.status === 'RUNNING') {
-								alert('Other player disconnected')
-								removeValue();
-								exit();
-								closeBracket();
-								game.role = 'NONE';
-								game.status = 'NONE';
-								user.websocket.send(JSON.stringify({
-									'msgType': 'ROOM_LIST_REQUEST',
-								}))
-							onlineContent.style.display = 'block';
-					}
-					break;
-				case "FINISH":
-					console.log('FINISH');
-					if (game.role === 'CLIENT' && game.status === 'RUNNING') {
-						alert(`${data.winner}${lang[langIndex].win}`);
-						removeValue();
-						exit();
-						closeBracket();
-						game.role = 'NONE';
-						game.status = 'NONE';
-						user.websocket.send(JSON.stringify({
-							'msgType': 'ROOM_LIST_REQUEST',
-						}))
-						onlinContent.style.display = 'block';
-					}
-					break;
-			}
-		}
-		user.websocket.send(JSON.stringify({
-			'msgType': 'ROOM_LIST_REQUEST',
-		}))
+		user.websocket.close();
+		user.websocket = undefined;
 	}
 });
 
-function removeValue() {
+export function removeValue() {
 	const select = document.getElementById('select-num');
 	select.options[0].selected = true;
 	
@@ -145,6 +63,13 @@ function removeValue() {
 	}
 
 	const roomSetting = document.getElementById('room-setting');
+	for (let i = 0; i < roomSetting.length; i++) {
+		if (roomSetting[i].className === 'game-point') {
+			roomSetting[i].value = '10';
+		} else {
+			roomSetting[i].value = '';
+		}
+	}
 	if (roomSetting.style.display === 'block') {
 		roomSetting.style.display = 'none';
 	}

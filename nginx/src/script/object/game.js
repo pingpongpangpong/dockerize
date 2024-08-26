@@ -26,6 +26,7 @@ export class Game {
 		this.scene.add(light);
 	
 		this.gamePoint = gamePoint;
+		painGamePoint.innerHTML = '게임 포인트: ' + gamePoint;
 		this.scoreChanged = false;
 	}
 	awakeHost(name1, name2) {
@@ -64,85 +65,87 @@ export class Game {
 	}
 
 	updateHost(websocket) {
-		return new Promise((resolve) => {
-			this.updateScore();
-			let lasttime = performance.now();
-			const animate = (currenttime) => {
-				const deltatime = Math.min((currenttime - lasttime) / 1000, 0.1);
-				lasttime = currenttime;
-				this.player1.move(deltatime);
-				this.player2.move(deltatime);
-				if (this.ball.move(this.player1, this.player2, deltatime)) {
-					this.scoreChanged = true;
-					this.updateScore();
-				}
-				if (this.player1.score >= this.gamePoint || this.player2.score >= this.gamePoint) {
-					winner = this.player1.score > this.player2.score ? this.player1.name: this.player2.name;
-					if (websocket) {
-						websocket.send(JSON.stringify({
-							'msgType': 'FINISH',
-							'winner': winner,
-						}));
-					}
-					this.end(winner);
-					exit();
-					resolve();
-				} else {
-					animatedId = requestAnimationFrame(animate);
-					if (websocket) {
-						websocket.send(JSON.stringify({
-							'msgType': 'SYNC',
-							'player1': {
-								'x': this.player1.mesh.position.x,
-								'y': this.player1.mesh.position.y,
-								'score': this.player1.score
-							},
-							'player2': {
-								'x': this.player2.mesh.position.x,
-								'y': this.player2.mesh.position.y,
-								'score': this.player2.score
-							},
-							'ball': {
-								'x': this.ball.mesh.position.x,
-								'y': this.ball.mesh.position.y
-							},
-							'scoreChanged': String(this.scoreChanged)
-						}));
-						if (this.scoreChanged)
-							this.scoreChanged = false;
-					}
-					this.renderer.render(this.scene, this.camera);
-				}
+		this.updateScore();
+		let lasttime = performance.now();
+		const animate = (currenttime) => {
+			const deltatime = Math.min((currenttime - lasttime) / 1000, 0.1);
+			lasttime = currenttime;
+			this.player1.move(deltatime);
+			this.player2.move(deltatime);
+			if (this.ball.move(this.player1, this.player2, deltatime)) {
+				this.scoreChanged = true;
+				this.updateScore();
 			}
-			animate(0);
-		});
+			if (this.player1.score >= this.gamePoint || this.player2.score >= this.gamePoint) {
+				winner = this.player1.score > this.player2.score ? this.player1.name: this.player2.name;
+				if (websocket) {
+					websocket.send(JSON.stringify({
+						'msgType': 'FINISH',
+						'winner': winner,
+					}));
+					this.end(winner);
+					websocket.close();
+					websocket = undefined;
+				}
+			} else {
+				if (websocket) {
+					websocket.send(JSON.stringify({
+						'msgType': 'SYNC',
+							'player1': {
+							'x': this.player1.mesh.position.x,
+							'y': this.player1.mesh.position.y,
+							'score': this.player1.score
+						},
+						'player2': {
+							'x': this.player2.mesh.position.x,
+							'y': this.player2.mesh.position.y,
+							'score': this.player2.score
+						},
+						'ball': {
+							'x': this.ball.mesh.position.x,
+							'y': this.ball.mesh.position.y
+						},
+						'scoreChanged': String(this.scoreChanged)
+					}));
+					if (this.scoreChanged)
+						this.scoreChanged = false;
+				}
+				animatedId = requestAnimationFrame(animate);
+				this.renderer.render(this.scene, this.camera);
+			}
+		}
+		animate(0);
 	}
 
 	updateClient(websocket) {
 		this.updateScore();
 		window.addEventListener("keyup", (e) => {
-			if (e.key === "ArrowUp") {
-				this.player2.keyInput.up = false;
-			} else if (e.key === "ArrowDown") {
-				this.player2.keyInput.down = false;
+			if (this) {
+				if (e.key === "ArrowUp") {
+					this.player2.keyInput.up = false;
+				} else if (e.key === "ArrowDown") {
+					this.player2.keyInput.down = false;
+				}
+				websocket.send(JSON.stringify({
+					'msgType': 'INPUT',
+					'keyInputUp': String(this.player2.keyInput.up),
+					'keyInputDown': String(this.player2.keyInput.down)
+				}));
 			}
-			wsocket.send(JSON.stringify({
-				'msgType': 'INPUT',
-				'keyInputUp': String(this.player2.keyInput.up),
-				'keyInputDown': String(this.player2.keyInput.down)
-			}));
 		});
 		window.addEventListener("keydown", (e) => {
-			if (e.key === "ArrowUp") {
-				this.player2.keyInput.up = true;
-			} else if (e.key === "ArrowDown") {
-				this.player2.keyInput.down = true;
+			if (this) {
+				if (e.key === "ArrowUp") {
+					this.player2.keyInput.up = true;
+				} else if (e.key === "ArrowDown") {
+					this.player2.keyInput.down = true;
+				}
+				websocket.send(JSON.stringify({
+					'msgType': 'INPUT',
+					'keyInputUp': String(this.player2.keyInput.up),
+					'keyInputDown': String(this.player2.keyInput.down)
+				}));
 			}
-			wsocket.send(JSON.stringify({
-				'msgType': 'INPUT',
-				'keyInputUp': String(this.player2.keyInput.up),
-				'keyInputDown': String(this.player2.keyInput.down)
-			}));
 		});
 		const animate = () => {
 			if (this.scoreChanged) {
@@ -169,7 +172,6 @@ export class Game {
 				if (this.player1.score >= this.gamePoint || this.player2.score >= this.gamePoint) {
 					winner = this.player1.score > this.player2.score ? this.player1.name: this.player2.name;
 					this.end(winner);
-					exit();
 					resolve();
 				} else {
 					animatedId = requestAnimationFrame(animate);
@@ -202,6 +204,7 @@ export class Game {
 		this.player2 = null;
 		this.ball = null;
 		alert(`${winner}${lang[langIndex].win}`);
+		exit();
 	}
 }
 

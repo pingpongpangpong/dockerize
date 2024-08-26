@@ -3,14 +3,7 @@ const signoutButton = document.getElementById('signout');
 const onlineButton = document.getElementById('m-tab');
 
 signinButton.addEventListener('click', () => {
-	if (user.websocket === undefined) {
-		user.websocket = new WebSocket(
-			'ws://'
-			+ window.location.host
-			+ '/ws/'
-		);
-		user.name = prompt('username');
-	}
+	user.name = prompt("id");
 	signinButton.style.display = 'none';
 	signoutButton.style.display = 'block';
 	onlineButton.style.display = 'block';

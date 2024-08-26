@@ -1,6 +1,7 @@
-import { Game, winner } from '../object/game.js';
+import { Game, winner, exit } from '../object/game.js';
 import { lang, langIndex } from "../lang.js";
 import { canvas, ctx, initBracket, paintBracket } from './bracket.js';
+import { removeValue } from "../tab.js";
 
 const painGamePoint = document.getElementById('show-gp');
 let isRunning = true;
@@ -57,8 +58,146 @@ export async function tournament(gamePoint, nameList) {
 	}
 }
 
-export function online(gamePoint, room) {
-	console.log('online');
+export function onlineHost(data) {
+	document.getElementById('online').style.display = 'none';
+	if (user.websocket === undefined) {
+		user.websocket = new WebSocket (
+			'ws://'
+			+ window.location.host
+			+ '/ws/'
+			+ data.roomName
+			+ '/'
+		);
+
+		if (!user.websocket) {
+			alert("Can't connect websocket");
+			removeValue();
+			closeBracket();
+			fillRoomList(1);
+			document.getElementById('online').style.display = 'block';
+			return ;
+		}
+
+		const game = new Game(data.gamePoint);
+
+		user.websocket.onopen = (e) => {
+			console.log("Enter the room: " + data.roomName);
+		}
+
+		user.websocket.onclose = (e) => {
+			console.log("Websocket close")
+			finishRoom(data.roomName);
+			removeValue();
+			closeBracket();
+			fillRoomList(1);
+			document.getElementById('online').style.display = 'block';
+		}
+
+		user.websocket.onmessage = (e) => {
+			const json_data = JSON.parse(e.data);
+			switch (json_data.msgType) {
+				case "START":
+					console.log('GAME_START');
+					game.awakeHost(user.name, json_data.player2);
+					game.updateHost(user.websocket);
+					break;
+				case "INPUT":
+					game.player2.keyInput.up = (json_data.keyInputUp === 'true');
+					game.player2.keyInput.down = (json_data.keyInputDown === 'true');
+					break;
+				case "DISCONNECT":
+					console.log('DISCONNECT');
+					if (game.status === 'READY' || game.status === 'RUNNING') {
+						alert('Other player disconnected')
+						if (user.websocket) {
+							user.websocket.close();
+							user.websocket = undefined;
+						}
+						document.getElementById('online').style.display = 'block';
+					}
+					break;
+			}
+		}
+	}
+}
+
+export function onlineClient(data) {
+	document.getElementById('online').style.display = 'none';
+	if (user.websocket === undefined) {
+		user.websocket = new WebSocket (
+			'ws://'
+			+ window.location.host
+			+ '/ws/'
+			+ data.roomName
+			+ '/'
+		);
+
+		if (!user.websocket) {
+			alert("Can't connect websocket");
+			removeValue();
+			closeBracket();
+			fillRoomList(1);
+			document.getElementById('online').style.display = 'block';
+			return ;
+		}
+	
+		const game = new Game(data.gamePoint);
+
+		user.websocket.onopen = (e) => {
+			console.log("Enter the room: " + data.roomName);
+			user.websocket.send(JSON.stringify({
+				'msgType': 'START',
+				'player2': user.name,
+			}));
+		}
+
+		user.websocket.onclose = (e) => {
+			console.log("Websocket close");
+			removeValue();
+			closeBracket();
+			fillRoomList(1);
+			document.getElementById('online').style.display = 'block';
+			
+		}
+
+		user.websocket.onmessage = (e) => {
+			const json_data = JSON.parse(e.data);
+			switch (json_data.msgType) {
+				case "START":
+					console.log('GAME_START');
+					game.awakeClient(data.player1, user.name);
+					game.updateClient(user.websocket);
+					break;
+				case "SYNC":
+					game.player1.mesh.position.x = json_data.player1.x;
+					game.player1.mesh.position.y = json_data.player1.y;
+					game.player1.score = json_data.player1.score;
+					game.player2.mesh.position.x = json_data.player2.x;
+					game.player2.mesh.position.y = json_data.player2.y;
+					game.player2.score = json_data.player2.score;
+					game.ball.mesh.position.x = json_data.ball.x;
+					game.ball.mesh.position.y = json_data.ball.y;
+					game.scoreChanged = (json_data.scoreChanged === 'true');
+					break;
+				case "DISCONNECT":
+					console.log('DISCONNECT');
+					alert('Other player disconnected')
+					if (user.websocket) {
+						user.websocket.close();
+						user.websocket = undefined;
+					}
+					break;
+				case "FINISH":
+					console.log('FINISH');
+					game.end(json_data.winner);
+					if (user.websocket) {
+						user.websocket.close();
+						user.websocket = undefined;
+					}
+					break;
+			}
+		}
+	}
 }
 
 export function getGamePoint(type) {
@@ -89,7 +228,7 @@ export function closeBracket() {
 	clearTimeout();
 }
 
-export function fillRoomList(data) {
+function fillList(data) {
 	let count = 1;
 	if (data.roomList) {
 		data.roomList.forEach((room) => {
@@ -99,13 +238,37 @@ export function fillRoomList(data) {
 
 			listSubject.innerText = room.name;
 			listButton.addEventListener('click', () => {
-					if (user.websocket) {
-						user.websocket.send(JSON.stringify({
-							'msgType': 'JOIN_ROOM',
-							'roomName': room.name,
-							'player2': user.name,
-						}))
+				const xhr = new XMLHttpRequest();
+				xhr.open('POST', 'join_room');
+				xhr.setRequestHeader('Content-Type', 'application/json');
+				xhr.addEventListener('readystatechange', function (event) {
+					const { target } = event;
+					if (target.readyState === XMLHttpRequest.DONE) {
+						const { status } = target;
+						if (status === 0 || (status >= 200 && status < 400)) {
+							const data =  JSON.parse(xhr.responseText);
+							if (data.status === "success") {
+								console.log('JOIN_ROOM');
+								onlineClient(JSON.parse(xhr.responseText));
+							} else if (data.status === "fail") {
+								alert(data.msg);
+							}
+						}
+						else {
+							alert(xhr.status + ": " + xhr.responseText);
+						}
 					}
+				});
+				let password = "";
+				console.log(room.password);
+				if (room.password) {
+					password = prompt("password");
+				}
+				xhr.send(JSON.stringify({
+					'roomName': room.name,
+					'password': password,
+					'player2': user.name
+				}));
 				}
 			)
 			listDisplay.style.display = 'block';
@@ -117,4 +280,47 @@ export function fillRoomList(data) {
 		emptyList.style.display = 'none';
 		count++;
 	}
+}
+
+export function fillRoomList(page) {
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'list_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				fillList(JSON.parse(xhr.responseText));
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	xhr.send(JSON.stringify({
+		'page': page
+	}));
+}
+
+export function finishRoom(room_name) {
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'finish_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data = JSON.parse(xhr.responseText);
+				console.log(data.result);
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	xhr.send(JSON.stringify({
+		'roomName': room_name
+	}));
 }

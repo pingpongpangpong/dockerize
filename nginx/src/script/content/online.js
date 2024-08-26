@@ -1,4 +1,4 @@
-import { online, getGamePoint, checkName} from "./feature.js";
+import { onlineHost } from "./feature.js";
 import { lang, langIndex } from '../lang.js';
 
 const roomSettingContainer = document.getElementById('room-setting');
@@ -39,14 +39,31 @@ document.getElementById('m-ok').addEventListener('click', () => {
 	}
 	
 	roomSettingContainer.style.display = 'none';
-	document.getElementById('online').style.display = 'none';
-	if (user.websocket) {
-		user.websocket.send(JSON.stringify({
-			'msgType': 'CREATE_ROOM',
-			'roomName': roomName,
-			'goalPoint': gamePoint,
-			'password': password,
-			'player1': user.name,
-		}))
-	}
+
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'create_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data = JSON.parse(xhr.responseText);
+				if (data.result === 'success') {
+					onlineHost(data);
+				} else {
+					alert("Can't create room.")
+				}
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	xhr.send(JSON.stringify({
+		'roomName': roomName,
+		'gamePoint': gamePoint,
+		'password': password,
+		'player1': user.name
+	}));
 });
