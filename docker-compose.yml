@@ -14,16 +14,34 @@ services:
       - ./.env
     restart: on-failure
 
-  django:
-    container_name: django
-    build: ./django
-    image: django:pingpong
+  django-wsgi:
+    container_name: django-wsgi
+    build: 
+      context: ./django
+      dockerfile: wsgi/Dockerfile
+    image: django-wsgi:pingpong
     networks:
       - pingpong
     env_file:
       - ./.env
     depends_on:
       - postgresql
+    restart: on-failure
+
+
+  django-asgi:
+    container_name: django-asgi
+    build:
+      context: ./django
+      dockerfile: asgi/Dockerfile
+    image: django-asgi:pingpong
+    networks:
+      - pingpong
+    env_file:
+      - ./.env
+    depends_on:
+      - postgresql
+      - django-wsgi
     restart: on-failure
 
   nginx:
@@ -36,7 +54,8 @@ services:
       - ./.env
     depends_on:
       - postgresql
-      - django
+      - django-wsgi
+      - django-asgi
     restart: on-failure
     ports:
       - 80:80/tcp
