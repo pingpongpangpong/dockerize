@@ -72,9 +72,21 @@
 						<section id="t-button" class="field-row"> </section>
 					</div>
 					<div id="online" style="display: none;">
-						<div id="top">
-							<input id="search" type="text" placeholder="search" />
-							<button id="make-room">방 만들기</button>
+						<div id="top" class="panel">
+							<p id="room_select" class="room-panel">
+								<input id="search" type="text" placeholder="search" />
+								<button id="search-room">찾기</button>
+								<button id="make-room">방 만들기</button>
+							</p>
+							<p id="page_select" class="page-panel">
+								<button id="page-prev" class="page-button">&lt;</button>
+								<a id="page-1" class="page-num">1</a>
+								<a id="page-2" class="page-num">2</a>
+								<a id="page-3" class="page-num">3</a>
+								<a id="page-4" class="page-num">4</a>
+								<a id="page-5" class="page-num">5</a>
+								<button  id="page-next" class="page-button">&gt;</button>
+							</p>
 						</div>
 						<div id="room-setting" class="window setting z-1 draggable" style="display: none;">
 							<div class="title-bar">
@@ -108,11 +120,31 @@
 							</div>
 						</div>
 						<div id="room-list">
-							<div id="list-1" class="list"><p id="list-name-1" class="room-name">Subject</p><p class="room-join"><button id="list-button-1" class="join-button">Join</button></p></div>
-							<div id="list-2" class="list"><p id="list-name-2" class="room-name">Subject</p><p class="room-join"><button id="list-button-2" class="join-button">Join</button></p></div>
-							<div id="list-3" class="list"><p id="list-name-3" class="room-name">Subject</p><p class="room-join"><button id="list-button-3" class="join-button">Join</button></p></div>
-							<div id="list-4" class="list"><p id="list-name-4" class="room-name">Subject</p><p class="room-join"><button id="list-button-4" class="join-button">Join</button></p></div>
-							<div id="list-5" class="list"><p id="list-name-5" class="room-name">Subject</p><p class="room-join"><button id="list-button-5" class="join-button">Join</button></button></p></div>
+							<div id="list-1" class="list">
+								<p id="list-name-1" class="room-name">Subject</p>
+								<p id="list-password-1" class="room-password">password</p>
+								<p class="room-join"><button id="list-button-1" class="join-button">Join</button></p>
+							</div>
+							<div id="list-2" class="list">
+								<p id="list-name-2" class="room-name">Subject</p>
+								<p id="list-password-2" class="room-password">password</p>
+								<p class="room-join"><button id="list-button-2" class="join-button">Join</button></p>
+							</div>
+							<div id="list-3" class="list">
+								<p id="list-name-3" class="room-name">Subject</p>
+								<p id="list-password-3" class="room-password">password</p>
+								<p class="room-join"><button id="list-button-3" class="join-button">Join</button></p>
+							</div>
+							<div id="list-4" class="list">
+								<p id="list-name-4" class="room-name">Subject</p>
+								<p id="list-password-4" class="room-password">password</p>
+								<p class="room-join"><button id="list-button-4" class="join-button">Join</button></p>
+							</div>
+							<div id="list-5" class="list">
+								<p id="list-name-5" class="room-name">Subject</p>
+								<p id="list-password-5" class="room-password">password</p>
+								<p class="room-join"><button id="list-button-5" class="join-button">Join</button></p>
+							</div>
 						</div>
 					</div>
 				</div>

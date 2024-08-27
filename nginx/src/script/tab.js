@@ -39,11 +39,11 @@ document.getElementById('m-tab').addEventListener('click', () => {
 	removeValue();
 	exit();
 	closeBracket();
-	fillRoomList(1);
 	if (user.websocket) {
 		user.websocket.close();
 		user.websocket = undefined;
 	}
+	fillRoomList(1);
 });
 
 export function removeValue() {

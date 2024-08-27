@@ -31,7 +31,9 @@ def listRoom(request):
             count = 1
             page = int(data_json['page'])
             roomList = Room.objects.exclude(status='running')
-            total_page = roomList.count() / 5 + 1
+            total_page = roomList.count() / 5
+            if total_page == 0:
+                total_page = 1
             if roomList.exists():
                 if page > total_page:
                     return HttpResponse(status=400)

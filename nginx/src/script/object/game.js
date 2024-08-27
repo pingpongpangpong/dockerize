@@ -85,7 +85,6 @@ export class Game {
 					}));
 					this.end(winner);
 					websocket.close();
-					websocket = undefined;
 				}
 			} else {
 				if (websocket) {
@@ -117,36 +116,8 @@ export class Game {
 		animate(0);
 	}
 
-	updateClient(websocket) {
+	updateClient() {
 		this.updateScore();
-		window.addEventListener("keyup", (e) => {
-			if (this) {
-				if (e.key === "ArrowUp") {
-					this.player2.keyInput.up = false;
-				} else if (e.key === "ArrowDown") {
-					this.player2.keyInput.down = false;
-				}
-				websocket.send(JSON.stringify({
-					'msgType': 'INPUT',
-					'keyInputUp': String(this.player2.keyInput.up),
-					'keyInputDown': String(this.player2.keyInput.down)
-				}));
-			}
-		});
-		window.addEventListener("keydown", (e) => {
-			if (this) {
-				if (e.key === "ArrowUp") {
-					this.player2.keyInput.up = true;
-				} else if (e.key === "ArrowDown") {
-					this.player2.keyInput.down = true;
-				}
-				websocket.send(JSON.stringify({
-					'msgType': 'INPUT',
-					'keyInputUp': String(this.player2.keyInput.up),
-					'keyInputDown': String(this.player2.keyInput.down)
-				}));
-			}
-		});
 		const animate = () => {
 			if (this.scoreChanged) {
 				this.updateScore();

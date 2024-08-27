@@ -84,9 +84,13 @@ select {
 
 .room-name {
 	font-size: 26px;
-	border: solid;
 	float: left;
 	margin-top: 15px;
+}
+
+.room-password {
+	float: left;
+	display: none;
 }
 
 .room-join {
@@ -98,4 +102,25 @@ select {
 .join-button {
 	padding: 10px 30px;
 	font-size: 20px;
+}
+
+.panel {
+	height: 40px;
+}
+
+.room-panel {
+	float: left;
+}
+
+.page-panel {
+	float: right;
+}
+
+.page-button {
+	display: none;
+}
+
+.page-num {
+	color: inherit;
+	text-decoration: none;
 }
