@@ -58,6 +58,206 @@ export async function tournament(gamePoint, nameList) {
 	}
 }
 
+const listEvent1 = () => {
+	const listSubject1 = document.getElementById('list-name-1');
+	const roomPassword = document.getElementById('list-password-1');
+	const roomName = listSubject1.innerHTML;
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'join_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data =  JSON.parse(xhr.responseText);
+				if (data.status === "success") {
+					console.log('JOIN_ROOM');
+					onlineClient(JSON.parse(xhr.responseText));
+				} else if (data.status === "fail") {
+					alert(data.msg);
+				}
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	let password = "";
+	if (roomPassword.innerHTML === "true") password = prompt("password");
+	xhr.send(JSON.stringify({
+		'roomName': roomName,
+		'password': password,
+		'player2': user.name
+	}));
+}
+
+const listEvent2 = () => {
+	const listSubject1 = document.getElementById('list-name-2');
+	const roomPassword = document.getElementById('list-password-2');
+	const roomName = listSubject1.innerHTML;
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'join_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data =  JSON.parse(xhr.responseText);
+				if (data.status === "success") {
+					console.log('JOIN_ROOM');
+					onlineClient(JSON.parse(xhr.responseText));
+				} else if (data.status === "fail") {
+					alert(data.msg);
+				}
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	let password = "";
+	if (roomPassword.innerHTML === "true") password = prompt("password");
+	xhr.send(JSON.stringify({
+		'roomName': roomName,
+		'password': password,
+		'player2': user.name
+	}));
+}
+
+const listEvent3 = () => {
+	const listSubject1 = document.getElementById('list-name-3');
+	const roomPassword = document.getElementById('list-password-3');
+	const roomName = listSubject1.innerHTML;
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'join_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data =  JSON.parse(xhr.responseText);
+				if (data.status === "success") {
+					console.log('JOIN_ROOM');
+					onlineClient(JSON.parse(xhr.responseText));
+				} else if (data.status === "fail") {
+					alert(data.msg);
+				}
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	let password = "";
+	if (roomPassword.innerHTML === "true") password = prompt("password");
+	xhr.send(JSON.stringify({
+		'roomName': roomName,
+		'password': password,
+		'player2': user.name
+	}));
+}
+
+const listEvent4 = () => {
+	const listSubject1 = document.getElementById('list-name-4');
+	const roomPassword = document.getElementById('list-password-4');
+	const roomName = listSubject1.innerHTML;
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'join_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data =  JSON.parse(xhr.responseText);
+				if (data.status === "success") {
+					console.log('JOIN_ROOM');
+					onlineClient(JSON.parse(xhr.responseText));
+				} else if (data.status === "fail") {
+					alert(data.msg);
+				}
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	let password = "";
+	if (roomPassword.innerHTML === "true") password = prompt("password");
+	xhr.send(JSON.stringify({
+		'roomName': roomName,
+		'password': password,
+		'player2': user.name
+	}));
+}
+
+const listEvent5 = () => {
+	const listSubject1 = document.getElementById('list-name-5');
+	const roomPassword = document.getElementById('list-password-5');
+	const roomName = listSubject1.innerHTML;
+	const xhr = new XMLHttpRequest();
+	xhr.open('POST', 'join_room');
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.addEventListener('readystatechange', function (event) {
+		const { target } = event;
+		if (target.readyState === XMLHttpRequest.DONE) {
+			const { status } = target;
+			if (status === 0 || (status >= 200 && status < 400)) {
+				const data =  JSON.parse(xhr.responseText);
+				if (data.status === "success") {
+					console.log('JOIN_ROOM');
+					onlineClient(JSON.parse(xhr.responseText));
+				} else if (data.status === "fail") {
+					alert(data.msg);
+				}
+			}
+			else {
+				alert(xhr.status + ": " + xhr.responseText);
+			}
+		}
+	});
+	let password = "";
+	if (roomPassword.innerHTML === "true") password = prompt("password");
+	xhr.send(JSON.stringify({
+		'roomName': roomName,
+		'password': password,
+		'player2': user.name
+	}));
+}
+
+const pageEvent1 = () => {
+	const pageNum = document.getElementById('page-1');
+	const number = pageNum.innerHTML;
+	fillRoomList(number);
+}
+
+const pageEvent2 = () => {
+	const pageNum = document.getElementById('page-2');
+	const number = pageNum.innerHTML;
+	fillRoomList(number);
+}
+
+const pageEvent3 = () => {
+	const pageNum = document.getElementById('page-3');
+	const number = pageNum.innerHTML;
+	fillRoomList(number);
+}
+
+const pageEvent4 = () => {
+	const pageNum = document.getElementById('page-4');
+	const number = pageNum.innerHTML;
+	fillRoomList(number);
+}
+
+const pageEvent5 = () => {
+	const pageNum = document.getElementById('page-5');
+	const number = pageNum.innerHTML;
+	fillRoomList(number);
+}
+
 export function onlineHost(data) {
 	document.getElementById('online').style.display = 'none';
 	if (user.websocket === undefined) {
@@ -91,6 +291,7 @@ export function onlineHost(data) {
 			closeBracket();
 			fillRoomList(1);
 			document.getElementById('online').style.display = 'block';
+			user.websocket = undefined;
 		}
 
 		user.websocket.onmessage = (e) => {
@@ -123,7 +324,11 @@ export function onlineHost(data) {
 
 export function onlineClient(data) {
 	document.getElementById('online').style.display = 'none';
-	if (user.websocket === undefined) {
+	if (user.websocket) {
+		user.websocket.close();
+		user.websocket = undefined;
+	}
+	if (!user.websocket) {
 		user.websocket = new WebSocket (
 			'ws://'
 			+ window.location.host
@@ -143,6 +348,40 @@ export function onlineClient(data) {
 	
 		const game = new Game(data.gamePoint);
 
+		window.addEventListener("keyup", (e) => {
+			if (game) {
+				if (e.key === "ArrowUp") {
+					game.player2.keyInput.up = false;
+				} else if (e.key === "ArrowDown") {
+					game.player2.keyInput.down = false;
+				}
+				if (user.websocket) {
+					user.websocket.send(JSON.stringify({
+						'msgType': 'INPUT',
+						'keyInputUp': String(game.player2.keyInput.up),
+						'keyInputDown': String(game.player2.keyInput.down)
+					}));
+				}
+			}
+		});
+		
+		window.addEventListener("keydown", (e) => {
+			if (game) {
+				if (e.key === "ArrowUp") {
+					this.player2.keyInput.up = true;
+				} else if (e.key === "ArrowDown") {
+					this.player2.keyInput.down = true;
+				}
+				if (user.websocket) {
+					user.websocket.send(JSON.stringify({
+						'msgType': 'INPUT',
+						'keyInputUp': String(game.player2.keyInput.up),
+						'keyInputDown': String(game.player2.keyInput.down)
+					}));
+				}
+			}
+		});
+
 		user.websocket.onopen = (e) => {
 			console.log("Enter the room: " + data.roomName);
 			user.websocket.send(JSON.stringify({
@@ -157,7 +396,7 @@ export function onlineClient(data) {
 			closeBracket();
 			fillRoomList(1);
 			document.getElementById('online').style.display = 'block';
-			
+			user.websocket = undefined;
 		}
 
 		user.websocket.onmessage = (e) => {
@@ -166,7 +405,7 @@ export function onlineClient(data) {
 				case "START":
 					console.log('GAME_START');
 					game.awakeClient(data.player1, user.name);
-					game.updateClient(user.websocket);
+					game.updateClient();
 					break;
 				case "SYNC":
 					game.player1.mesh.position.x = json_data.player1.x;
@@ -228,58 +467,135 @@ export function closeBracket() {
 	clearTimeout();
 }
 
+
 function fillList(data) {
 	let count = 1;
 	if (data.roomList) {
 		data.roomList.forEach((room) => {
-			let listDisplay = document.getElementById('list-' + count);
-			let listSubject = document.getElementById('list-name-' + count);
-			let listButton = document.getElementById('list-button-' + count);
-
-			listSubject.innerText = room.name;
-			listButton.addEventListener('click', () => {
-				const xhr = new XMLHttpRequest();
-				xhr.open('POST', 'join_room');
-				xhr.setRequestHeader('Content-Type', 'application/json');
-				xhr.addEventListener('readystatechange', function (event) {
-					const { target } = event;
-					if (target.readyState === XMLHttpRequest.DONE) {
-						const { status } = target;
-						if (status === 0 || (status >= 200 && status < 400)) {
-							const data =  JSON.parse(xhr.responseText);
-							if (data.status === "success") {
-								console.log('JOIN_ROOM');
-								onlineClient(JSON.parse(xhr.responseText));
-							} else if (data.status === "fail") {
-								alert(data.msg);
-							}
-						}
-						else {
-							alert(xhr.status + ": " + xhr.responseText);
-						}
-					}
-				});
-				let password = "";
-				console.log(room.password);
-				if (room.password) {
-					password = prompt("password");
-				}
-				xhr.send(JSON.stringify({
-					'roomName': room.name,
-					'password': password,
-					'player2': user.name
-				}));
-				}
-			)
+			const listDisplay = document.getElementById('list-' + count);
+			const listSubject = document.getElementById('list-name-' + count);
+			const listPassword = document.getElementById('list-password-' + count);
+			listSubject.innerHTML = room.name;
+			listPassword.innerHTML = String(room.password);
 			listDisplay.style.display = 'block';
 			count++;
 		});
 	}
 	while (count <= 5) {
-		let emptyList = document.getElementById('list-' + count);
+		const emptyList = document.getElementById('list-' + count);
 		emptyList.style.display = 'none';
 		count++;
 	}
+}
+
+export function fillPage(data) {
+	
+	let curPage = Number(data.cur_page);
+	let totalPage = Number(data.total_page);
+
+	for (let i = -2; i <= 2; i++) {
+		let pageNum = curPage + i;
+		let num = i + 3;
+		const page_num = document.getElementById('page-' + num);
+		if (pageNum < 1 || pageNum > totalPage) {
+			continue;
+		};
+		page_num.innerHTML = pageNum;
+		page_num.style.display = 'block';
+	}
+	if (curPage - 3 >= 1) {
+		const page_button = document.getElementById('page-prev');
+		page_button.addEventListener('click', () => {
+			fillRoomList(curPage - 3);
+		})
+		page_button.style.display = 'block';
+	}
+	if (curPage + 3 <= totalPage) {
+		const page_button = document.getElementById('page-next');
+		page_button.addEventListener('click', () => {
+			fillRoomList(curPage + 3);
+		})
+		page_button.style.display = 'block';
+	}
+}
+
+function cleanRoomPage() {
+	const list1 = document.getElementById('list-1');
+	const listSub1 = document.getElementById('list-name-1');
+	const listBut1 = document.getElementById('list-button-1');
+	const page1 = document.getElementById('page-1');
+	listBut1.removeEventListener('click', listEvent1);
+	page1.removeEventListener('click', pageEvent1)
+	list1.style.display = 'none';
+	listSub1.innerHTML = "";
+	page1.innerHTML = "";
+	
+	const list2 = document.getElementById('list-2');
+	const listSub2 = document.getElementById('list-name-2');
+	const listBut2 = document.getElementById('list-button-2');
+	const page2 = document.getElementById('page-2');
+	listBut2.removeEventListener('click', listEvent2);
+	page2.removeEventListener('click', pageEvent2)
+	list2.style.display = 'none';
+	listSub2.innerHTML = "";
+	page2.innerHTML = "";
+
+	const list3 = document.getElementById('list-3');
+	const listSub3 = document.getElementById('list-name-3');
+	const listBut3 = document.getElementById('list-button-3');
+	const page3 = document.getElementById('page-3');
+	listBut3.removeEventListener('click', listEvent3);
+	page3.removeEventListener('click', pageEvent3)
+	list3.style.display = 'none';
+	listSub3.innerHTML = "";
+	page3.innerHTML = "";
+
+	const list4 = document.getElementById('list-4');
+	const listSub4 = document.getElementById('list-name-4');
+	const listBut4 = document.getElementById('list-button-4');
+	const page4 = document.getElementById('page-4');
+	listBut4.removeEventListener('click', listEvent4);
+	page4.removeEventListener('click', pageEvent4)
+	list4.style.display = 'none';
+	listSub4.innerHTML = "";
+	page4.innerHTML = "";
+
+	const list5 = document.getElementById('list-5');
+	const listSub5 = document.getElementById('list-name-5');
+	const listBut5 = document.getElementById('list-button-5');
+	const page5 = document.getElementById('page-5');
+	listBut5.removeEventListener('click', listEvent5);
+	page5.removeEventListener('click', pageEvent5)
+	list5.style.display = 'none';
+	listSub5.innerHTML = "";
+	page5.innerHTML = "";
+}
+
+function addEvent() {
+	const listBut1 = document.getElementById('list-button-1');
+	const page1 = document.getElementById('page-1');
+	listBut1.addEventListener('click', listEvent1);
+	page1.addEventListener('click', pageEvent1);
+
+	const listBut2 = document.getElementById('list-button-2');
+	const page2 = document.getElementById('page-2');
+	listBut2.addEventListener('click', listEvent2);
+	page2.addEventListener('click', pageEvent2);
+
+	const listBut3 = document.getElementById('list-button-3');
+	const page3 = document.getElementById('page-3');
+	listBut3.addEventListener('click', listEvent3);
+	page3.addEventListener('click', pageEvent3);
+
+	const listBut4 = document.getElementById('list-button-4');
+	const page4 = document.getElementById('page-4');
+	listBut4.addEventListener('click', listEvent4);
+	page4.addEventListener('click', pageEvent4);
+
+	const listBut5 = document.getElementById('list-button-5');
+	const page5 = document.getElementById('page-5');
+	listBut5.addEventListener('click', listEvent5);
+	page5.addEventListener('click', pageEvent5);
 }
 
 export function fillRoomList(page) {
@@ -291,7 +607,11 @@ export function fillRoomList(page) {
 		if (target.readyState === XMLHttpRequest.DONE) {
 			const { status } = target;
 			if (status === 0 || (status >= 200 && status < 400)) {
-				fillList(JSON.parse(xhr.responseText));
+				cleanRoomPage();
+				const data = JSON.parse(xhr.responseText);
+				fillList(data);
+				fillPage(data);
+				addEvent();
 			}
 			else {
 				alert(xhr.status + ": " + xhr.responseText);
