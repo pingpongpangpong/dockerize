@@ -27,6 +27,12 @@ DEBUG = True
 
 # Application definition
 
+# 42 Oauth 설정
+
+SOCIAL_AUTH_42_CLIENT_ID = '<your_client_id>'
+SOCIAL_AUTH_42_SECRET = '<your_client_secret>'
+SOCIAL_AUTH_42_SCOPE = ['public']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,6 +69,19 @@ ASGI_APPLICATION = "pingpong.asgi.application"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTHENTICATION_BACKENDS = (
+	'social_core.backends.fortytwo.FortyTwoOAuth2',
+	'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_42_KEY = '' # client id
+SOCIAL_AUTH_42_SECRET = '' # client secret
+
+# 로그인 및 리디렉션 설정
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

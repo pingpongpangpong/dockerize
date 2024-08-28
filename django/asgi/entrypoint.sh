@@ -6,6 +6,7 @@ echo "
 INSTALLED_APPS = [
     'daphne',
     'game',
+	'social_django',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

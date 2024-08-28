@@ -17,5 +17,6 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include("game.urls"))
+    path('', include("game.urls")),
+	path('auth/', include('social_django.urls', namespace='social')),  # OAuth URL 포함
 ]

@@ -5,7 +5,8 @@ cd /root/src
 echo "
 INSTALLED_APPS = [
     'game',
-    'django.contrib.admin',
+	'social_django',
+	'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
