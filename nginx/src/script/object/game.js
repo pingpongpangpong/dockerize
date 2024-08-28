@@ -2,6 +2,7 @@ import * as THREE from 'https://cdn.jsdelivr.net/npm/three/build/three.module.js
 import { Player } from './player.js';
 import { Ball } from './ball.js';
 import { lang, langIndex } from '../lang.js';
+import { fillRoomList } from '../content/feature.js';
 
 const player1Score = document.getElementById('l-player');
 const player2Score = document.getElementById('r-player');
@@ -83,9 +84,11 @@ export class Game {
 						'msgType': 'FINISH',
 						'winner': winner,
 					}));
-					this.end(winner);
-					websocket.close();
 				}
+				fillRoomList(1);
+				document.getElementById('online').style.display = 'block';
+				websocket.close();
+				this.end(winner);
 			} else {
 				if (websocket) {
 					websocket.send(JSON.stringify({

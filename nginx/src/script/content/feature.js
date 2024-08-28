@@ -565,7 +565,7 @@ export function fillRoomList(page) {
 
 
 
-export function finishRoom(room_name) {
+function finishRoom(room_name) {
 	const xhr = new XMLHttpRequest();
 	xhr.open('POST', 'finish_room');
 	xhr.setRequestHeader('Content-Type', 'application/json');
