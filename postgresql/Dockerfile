@@ -6,5 +6,6 @@ RUN  apt-get update
 RUN  apt-get install -y postgresql postgresql-contrib sudo
 
 COPY ./entrypoint.sh /root/
+COPY ./dummy.sh /root/
 
 CMD ["/bin/bash", "/root/entrypoint.sh"]

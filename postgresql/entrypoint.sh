@@ -13,7 +13,7 @@ $QUERY "grant all privileges on database $DB_NAME to $DB_USER;"
 service postgresql stop
 
 echo "host    $DB_NAME      $DB_USER      0.0.0.0/0          trust" >> /etc/postgresql/12/main/pg_hba.conf
-sed -i 's/local   all             all                                     peer/local   all             all                                     md5/g' /etc/postgresql/12/main/pg_hba.conf
+sed -i 's/local   all             all                                     peer/local   all             all                                     trust/g' /etc/postgresql/12/main/pg_hba.conf
 echo "listen_addresses = 'postgresql'" >> /etc/postgresql/12/main/postgresql.conf
 
 sudo -u postgres /usr/lib/postgresql/12/bin/postgres -D /var/lib/postgresql/12/main -c config_file=/etc/postgresql/12/main/postgresql.conf

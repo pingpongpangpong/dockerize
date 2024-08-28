@@ -58,10 +58,36 @@ export async function tournament(gamePoint, nameList) {
 	}
 }
 
-const listEvent1 = () => {
-	const listSubject1 = document.getElementById('list-name-1');
-	const roomPassword = document.getElementById('list-password-1');
-	const roomName = listSubject1.innerHTML;
+const searchRoom = () => {
+	const roomName = document.getElementById('search').value;
+	if (roomName == "") {
+		fillRoomList(1);
+	} else {
+		const xhr = new XMLHttpRequest();
+		xhr.open('POST', 'search_room');
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.addEventListener('readystatechange', function (event) {
+			const { target } = event;
+			if (target.readyState === XMLHttpRequest.DONE) {
+				const { status } = target;
+				if (status === 0 || (status >= 200 && status < 400)) {
+					cleanRoomPage();
+					const data = JSON.parse(xhr.responseText);
+					fillList(data);
+					addEvent();
+				}
+				else {
+					alert(xhr.status + ": " + xhr.responseText);
+				}
+			}
+		});
+		xhr.send(JSON.stringify({
+			'roomName': roomName
+		}));
+	}
+}
+
+function joinRoom(roomName, roomPassword) {
 	const xhr = new XMLHttpRequest();
 	xhr.open('POST', 'join_room');
 	xhr.setRequestHeader('Content-Type', 'application/json');
@@ -84,148 +110,62 @@ const listEvent1 = () => {
 		}
 	});
 	let password = "";
-	if (roomPassword.innerHTML === "true") password = prompt("password");
+	if (roomPassword === "true") password = prompt("password");
 	xhr.send(JSON.stringify({
 		'roomName': roomName,
 		'password': password,
 		'player2': user.name
 	}));
+}
+
+const listEvent1 = () => {
+	const listSubject = document.getElementById('list-name-1');
+	const roomPassword = document.getElementById('list-password-1');
+	const roomName = listSubject.innerHTML;
+	const password = roomPassword.innerHTML;
+	joinRoom(roomName, password);
 }
 
 const listEvent2 = () => {
-	const listSubject1 = document.getElementById('list-name-2');
+	const listSubject = document.getElementById('list-name-2');
 	const roomPassword = document.getElementById('list-password-2');
-	const roomName = listSubject1.innerHTML;
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', 'join_room');
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.addEventListener('readystatechange', function (event) {
-		const { target } = event;
-		if (target.readyState === XMLHttpRequest.DONE) {
-			const { status } = target;
-			if (status === 0 || (status >= 200 && status < 400)) {
-				const data =  JSON.parse(xhr.responseText);
-				if (data.status === "success") {
-					console.log('JOIN_ROOM');
-					onlineClient(JSON.parse(xhr.responseText));
-				} else if (data.status === "fail") {
-					alert(data.msg);
-				}
-			}
-			else {
-				alert(xhr.status + ": " + xhr.responseText);
-			}
-		}
-	});
-	let password = "";
-	if (roomPassword.innerHTML === "true") password = prompt("password");
-	xhr.send(JSON.stringify({
-		'roomName': roomName,
-		'password': password,
-		'player2': user.name
-	}));
+	const roomName = listSubject.innerHTML;
+	const password = roomPassword.innerHTML;
+	joinRoom(roomName, password);
 }
 
 const listEvent3 = () => {
-	const listSubject1 = document.getElementById('list-name-3');
+	const listSubject = document.getElementById('list-name-3');
 	const roomPassword = document.getElementById('list-password-3');
-	const roomName = listSubject1.innerHTML;
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', 'join_room');
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.addEventListener('readystatechange', function (event) {
-		const { target } = event;
-		if (target.readyState === XMLHttpRequest.DONE) {
-			const { status } = target;
-			if (status === 0 || (status >= 200 && status < 400)) {
-				const data =  JSON.parse(xhr.responseText);
-				if (data.status === "success") {
-					console.log('JOIN_ROOM');
-					onlineClient(JSON.parse(xhr.responseText));
-				} else if (data.status === "fail") {
-					alert(data.msg);
-				}
-			}
-			else {
-				alert(xhr.status + ": " + xhr.responseText);
-			}
-		}
-	});
-	let password = "";
-	if (roomPassword.innerHTML === "true") password = prompt("password");
-	xhr.send(JSON.stringify({
-		'roomName': roomName,
-		'password': password,
-		'player2': user.name
-	}));
+	const roomName = listSubject.innerHTML;
+	const password = roomPassword.innerHTML;
+	joinRoom(roomName, password);
 }
 
 const listEvent4 = () => {
-	const listSubject1 = document.getElementById('list-name-4');
+	const listSubject = document.getElementById('list-name-4');
 	const roomPassword = document.getElementById('list-password-4');
-	const roomName = listSubject1.innerHTML;
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', 'join_room');
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.addEventListener('readystatechange', function (event) {
-		const { target } = event;
-		if (target.readyState === XMLHttpRequest.DONE) {
-			const { status } = target;
-			if (status === 0 || (status >= 200 && status < 400)) {
-				const data =  JSON.parse(xhr.responseText);
-				if (data.status === "success") {
-					console.log('JOIN_ROOM');
-					onlineClient(JSON.parse(xhr.responseText));
-				} else if (data.status === "fail") {
-					alert(data.msg);
-				}
-			}
-			else {
-				alert(xhr.status + ": " + xhr.responseText);
-			}
-		}
-	});
-	let password = "";
-	if (roomPassword.innerHTML === "true") password = prompt("password");
-	xhr.send(JSON.stringify({
-		'roomName': roomName,
-		'password': password,
-		'player2': user.name
-	}));
+	const roomName = listSubject.innerHTML;
+	const password = roomPassword.innerHTML;
+	joinRoom(roomName, password);
 }
 
 const listEvent5 = () => {
-	const listSubject1 = document.getElementById('list-name-5');
+	const listSubject = document.getElementById('list-name-5');
 	const roomPassword = document.getElementById('list-password-5');
-	const roomName = listSubject1.innerHTML;
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', 'join_room');
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.addEventListener('readystatechange', function (event) {
-		const { target } = event;
-		if (target.readyState === XMLHttpRequest.DONE) {
-			const { status } = target;
-			if (status === 0 || (status >= 200 && status < 400)) {
-				const data =  JSON.parse(xhr.responseText);
-				if (data.status === "success") {
-					console.log('JOIN_ROOM');
-					onlineClient(JSON.parse(xhr.responseText));
-				} else if (data.status === "fail") {
-					alert(data.msg);
-				}
-			}
-			else {
-				alert(xhr.status + ": " + xhr.responseText);
-			}
-		}
-	});
-	let password = "";
-	if (roomPassword.innerHTML === "true") password = prompt("password");
-	xhr.send(JSON.stringify({
-		'roomName': roomName,
-		'password': password,
-		'player2': user.name
-	}));
+	const roomName = listSubject.innerHTML;
+	const password = roomPassword.innerHTML;
+	joinRoom(roomName, password);
+}
+
+const pageEventPrev = () => {
+	const page_cur = document.getElementById('page-3');
+	fillRoomList(Number(page_cur.innerHTML) - 3);
+}
+
+const pageEventNext = () => {
+	const page_cur = document.getElementById('page-3');
+	fillRoomList(Number(page_cur.innerHTML) + 3);
 }
 
 const pageEvent1 = () => {
@@ -289,8 +229,6 @@ export function onlineHost(data) {
 			finishRoom(data.roomName);
 			removeValue();
 			closeBracket();
-			fillRoomList(1);
-			document.getElementById('online').style.display = 'block';
 			user.websocket = undefined;
 		}
 
@@ -312,8 +250,8 @@ export function onlineHost(data) {
 						alert('Other player disconnected')
 						if (user.websocket) {
 							user.websocket.close();
-							user.websocket = undefined;
 						}
+						fillRoomList(1);
 						document.getElementById('online').style.display = 'block';
 					}
 					break;
@@ -348,39 +286,7 @@ export function onlineClient(data) {
 	
 		const game = new Game(data.gamePoint);
 
-		window.addEventListener("keyup", (e) => {
-			if (game) {
-				if (e.key === "ArrowUp") {
-					game.player2.keyInput.up = false;
-				} else if (e.key === "ArrowDown") {
-					game.player2.keyInput.down = false;
-				}
-				if (user.websocket) {
-					user.websocket.send(JSON.stringify({
-						'msgType': 'INPUT',
-						'keyInputUp': String(game.player2.keyInput.up),
-						'keyInputDown': String(game.player2.keyInput.down)
-					}));
-				}
-			}
-		});
 		
-		window.addEventListener("keydown", (e) => {
-			if (game) {
-				if (e.key === "ArrowUp") {
-					this.player2.keyInput.up = true;
-				} else if (e.key === "ArrowDown") {
-					this.player2.keyInput.down = true;
-				}
-				if (user.websocket) {
-					user.websocket.send(JSON.stringify({
-						'msgType': 'INPUT',
-						'keyInputUp': String(game.player2.keyInput.up),
-						'keyInputDown': String(game.player2.keyInput.down)
-					}));
-				}
-			}
-		});
 
 		user.websocket.onopen = (e) => {
 			console.log("Enter the room: " + data.roomName);
@@ -394,8 +300,6 @@ export function onlineClient(data) {
 			console.log("Websocket close");
 			removeValue();
 			closeBracket();
-			fillRoomList(1);
-			document.getElementById('online').style.display = 'block';
 			user.websocket = undefined;
 		}
 
@@ -405,6 +309,39 @@ export function onlineClient(data) {
 				case "START":
 					console.log('GAME_START');
 					game.awakeClient(data.player1, user.name);
+					window.addEventListener("keyup", (e) => {
+						if (game) {
+							if (e.key === "ArrowUp") {
+								game.player2.keyInput.up = false;
+							} else if (e.key === "ArrowDown") {
+								game.player2.keyInput.down = false;
+							}
+							if (user.websocket) {
+								user.websocket.send(JSON.stringify({
+									'msgType': 'INPUT',
+									'keyInputUp': String(game.player2.keyInput.up),
+									'keyInputDown': String(game.player2.keyInput.down)
+								}));
+							}
+						}
+					});
+					
+					window.addEventListener("keydown", (e) => {
+						if (game) {
+							if (e.key === "ArrowUp") {
+								game.player2.keyInput.up = true;
+							} else if (e.key === "ArrowDown") {
+								game.player2.keyInput.down = true;
+							}
+							if (user.websocket) {
+								user.websocket.send(JSON.stringify({
+									'msgType': 'INPUT',
+									'keyInputUp': String(game.player2.keyInput.up),
+									'keyInputDown': String(game.player2.keyInput.down)
+								}));
+							}
+						}
+					});
 					game.updateClient();
 					break;
 				case "SYNC":
@@ -421,18 +358,21 @@ export function onlineClient(data) {
 				case "DISCONNECT":
 					console.log('DISCONNECT');
 					alert('Other player disconnected')
+					game.init();
 					if (user.websocket) {
 						user.websocket.close();
-						user.websocket = undefined;
 					}
+					fillRoomList(1);
+					document.getElementById('online').style.display = 'block';
 					break;
 				case "FINISH":
 					console.log('FINISH');
 					game.end(json_data.winner);
 					if (user.websocket) {
 						user.websocket.close();
-						user.websocket = undefined;
 					}
+					fillRoomList(1);
+					document.getElementById('online').style.display = 'block';
 					break;
 			}
 		}
@@ -481,11 +421,6 @@ function fillList(data) {
 			count++;
 		});
 	}
-	while (count <= 5) {
-		const emptyList = document.getElementById('list-' + count);
-		emptyList.style.display = 'none';
-		count++;
-	}
 }
 
 export function fillPage(data) {
@@ -497,25 +432,13 @@ export function fillPage(data) {
 		let pageNum = curPage + i;
 		let num = i + 3;
 		const page_num = document.getElementById('page-' + num);
+		page_num.innerText = pageNum;
 		if (pageNum < 1 || pageNum > totalPage) {
-			continue;
-		};
-		page_num.innerHTML = pageNum;
-		page_num.style.display = 'block';
-	}
-	if (curPage - 3 >= 1) {
-		const page_button = document.getElementById('page-prev');
-		page_button.addEventListener('click', () => {
-			fillRoomList(curPage - 3);
-		})
-		page_button.style.display = 'block';
-	}
-	if (curPage + 3 <= totalPage) {
-		const page_button = document.getElementById('page-next');
-		page_button.addEventListener('click', () => {
-			fillRoomList(curPage + 3);
-		})
-		page_button.style.display = 'block';
+			page_num.style.color = "transparent";
+		}
+		else {
+			page_num.style.color = "inherit";
+		}
 	}
 }
 
@@ -525,50 +448,58 @@ function cleanRoomPage() {
 	const listBut1 = document.getElementById('list-button-1');
 	const page1 = document.getElementById('page-1');
 	listBut1.removeEventListener('click', listEvent1);
-	page1.removeEventListener('click', pageEvent1)
+	page1.removeEventListener('click', pageEvent1);
 	list1.style.display = 'none';
-	listSub1.innerHTML = "";
-	page1.innerHTML = "";
+	listSub1.innerText = "";
+	page1.innerText = "";
 	
 	const list2 = document.getElementById('list-2');
 	const listSub2 = document.getElementById('list-name-2');
 	const listBut2 = document.getElementById('list-button-2');
 	const page2 = document.getElementById('page-2');
 	listBut2.removeEventListener('click', listEvent2);
-	page2.removeEventListener('click', pageEvent2)
+	page2.removeEventListener('click', pageEvent2);
 	list2.style.display = 'none';
-	listSub2.innerHTML = "";
-	page2.innerHTML = "";
+	listSub2.innerText = "";
+	page2.innerText = "";
 
 	const list3 = document.getElementById('list-3');
 	const listSub3 = document.getElementById('list-name-3');
 	const listBut3 = document.getElementById('list-button-3');
 	const page3 = document.getElementById('page-3');
 	listBut3.removeEventListener('click', listEvent3);
-	page3.removeEventListener('click', pageEvent3)
+	page3.removeEventListener('click', pageEvent3);
 	list3.style.display = 'none';
-	listSub3.innerHTML = "";
-	page3.innerHTML = "";
+	listSub3.innerText = "";
+	page3.innerText = "";
 
 	const list4 = document.getElementById('list-4');
 	const listSub4 = document.getElementById('list-name-4');
 	const listBut4 = document.getElementById('list-button-4');
 	const page4 = document.getElementById('page-4');
 	listBut4.removeEventListener('click', listEvent4);
-	page4.removeEventListener('click', pageEvent4)
+	page4.removeEventListener('click', pageEvent4);
 	list4.style.display = 'none';
-	listSub4.innerHTML = "";
-	page4.innerHTML = "";
+	listSub4.innerText = "";
+	page4.innerText = "";
 
 	const list5 = document.getElementById('list-5');
 	const listSub5 = document.getElementById('list-name-5');
 	const listBut5 = document.getElementById('list-button-5');
 	const page5 = document.getElementById('page-5');
 	listBut5.removeEventListener('click', listEvent5);
-	page5.removeEventListener('click', pageEvent5)
+	page5.removeEventListener('click', pageEvent5);
 	list5.style.display = 'none';
-	listSub5.innerHTML = "";
-	page5.innerHTML = "";
+	listSub5.innerText = "";
+	page5.innerText = "";
+
+	const pagePrevButton = document.getElementById('page-prev');
+	const pageNextButton = document.getElementById('page-next');
+	pagePrevButton.removeEventListener('click', pageEventPrev);
+	pageNextButton.removeEventListener('click', pageEventNext);
+
+	const searchButton = document.getElementById('search-room');
+	searchButton.removeEventListener('click', searchRoom);
 }
 
 function addEvent() {
@@ -596,6 +527,14 @@ function addEvent() {
 	const page5 = document.getElementById('page-5');
 	listBut5.addEventListener('click', listEvent5);
 	page5.addEventListener('click', pageEvent5);
+
+	const pagePrevButton = document.getElementById('page-prev');
+	const pageNextButton = document.getElementById('page-next');
+	pagePrevButton.addEventListener('click', pageEventPrev);
+	pageNextButton.addEventListener('click', pageEventNext);
+
+	const searchButton = document.getElementById('search-room');
+	searchButton.addEventListener('click', searchRoom);
 }
 
 export function fillRoomList(page) {
@@ -615,6 +554,7 @@ export function fillRoomList(page) {
 			}
 			else {
 				alert(xhr.status + ": " + xhr.responseText);
+				fillRoomList(1);
 			}
 		}
 	});
@@ -622,6 +562,8 @@ export function fillRoomList(page) {
 		'page': page
 	}));
 }
+
+
 
 export function finishRoom(room_name) {
 	const xhr = new XMLHttpRequest();

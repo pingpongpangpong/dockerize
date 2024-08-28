@@ -159,6 +159,12 @@ export class Game {
 	}
 
 	end(winner) {
+		this.init();
+		alert(`${winner}${lang[langIndex].win}`);
+		exit();
+	}
+
+	init() {
 		while(this.scene.children.length > 0) { 
 			this.scene.remove(this.scene.children[0]); 
 		}
@@ -174,8 +180,6 @@ export class Game {
 		this.player1 = null;
 		this.player2 = null;
 		this.ball = null;
-		alert(`${winner}${lang[langIndex].win}`);
-		exit();
 	}
 }
 

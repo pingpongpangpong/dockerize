@@ -42,7 +42,6 @@ class GamePlayer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         msgType = text_data_json["msgType"]
         if (msgType == "START"):
-            print("START")
             await self.channel_layer.group_send(
                 self.room_group_name, {"type": "start_message",
                                        "player2": text_data_json['player2']}

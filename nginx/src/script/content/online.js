@@ -67,3 +67,4 @@ document.getElementById('m-ok').addEventListener('click', () => {
 		'player1': user.name
 	}));
 });
+

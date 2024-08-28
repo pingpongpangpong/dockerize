@@ -7,43 +7,43 @@ const tournamentContent = document.getElementById('tournament');
 const onlineContent = document.getElementById('online');
 
 document.getElementById('l-tab').addEventListener('click', () => {
+	if (user.websocket) {
+		user.websocket.close();
+		user.websocket = undefined;
+	}
 	offlineContent.style.display = 'block';
 	tournamentContent.style.display = 'none';
 	onlineContent.style.display = 'none';
 	removeValue();
 	exit();
 	closeBracket();
+});
+
+document.getElementById('t-tab').addEventListener('click', () => {
 	if (user.websocket) {
 		user.websocket.close();
 		user.websocket = undefined;
 	}
-});
-
-document.getElementById('t-tab').addEventListener('click', () => {
 	offlineContent.style.display = 'none';
 	tournamentContent.style.display = 'block';
 	onlineContent.style.display = 'none';
 	removeValue();
 	exit();
 	closeBracket();
+});
+
+document.getElementById('m-tab').addEventListener('click', () => {
 	if (user.websocket) {
 		user.websocket.close();
 		user.websocket = undefined;
 	}
-});
-
-document.getElementById('m-tab').addEventListener('click', () => {
 	offlineContent.style.display = 'none';
 	tournamentContent.style.display = 'none';
+	fillRoomList(1);
 	onlineContent.style.display = 'block';
 	removeValue();
 	exit();
 	closeBracket();
-	if (user.websocket) {
-		user.websocket.close();
-		user.websocket = undefined;
-	}
-	fillRoomList(1);
 });
 
 export function removeValue() {
